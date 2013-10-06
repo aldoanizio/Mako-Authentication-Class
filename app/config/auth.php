@@ -25,9 +25,9 @@ return array
             'secret'   => 'tx6T7nE7ZV5UinFSUngqFW04FlzhReBe',
             'login'    => 'email',
             'password' => 'password',
-            'table'    => 'administradores',
-            'url'      => 'admin/login',
-            'redirect' => 'admin',
+            'table'    => 'users',
+            'url'      => 'users/login',
+            'redirect' => 'users',
             'ttl'      => 3600 * 720, // Eg: 30 Days
         ),
     ),
