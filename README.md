@@ -12,17 +12,29 @@ Based on Gatekeeper Authentication library (https://github.com/arkivverket/gatek
 
 ====== Exemple How to Use ======
 
+    namespace app\controllers\users;
+    
+    use \mako\Auth;
+    use \mako\View;
+    use \app\models\User;
+    
+    class Index extends \mako\Controller
+    {
 
-    public function before()
-    { 
-        if (Auth::check('users'))
-        {
-            // Do Stuffs to load user from DB based on email stored on session/cookie
-            $this->loggedUser = User::getUser(Auth::user('admin'), 'email'); 
+        public function before()
+        { 
+            if (Auth::check('users'))
+            {
+                // Do Stuffs to load user from DB based on email stored on session/cookie
+                $this->loggedUser = User::getUser(Auth::user('admin'), 'email'); 
+            }
+            else
+            {
+                // Redirect to User login URL
+                Auth::url('users');
+            }
         }
-        else
-        {
-            // Redirect to User login URL
-            Auth::url('users');
-        }
+        
+        
+        // Other Class Methods
     }
