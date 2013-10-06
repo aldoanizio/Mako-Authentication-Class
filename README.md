@@ -10,7 +10,7 @@ Based on Gatekeeper Authentication library (https://github.com/arkivverket/gatek
     :: Create multiples auth areas, and one of them with their own configs (eg: admin, users, members)
 
 
-====== Exemple How to Use ======
+====== Example How to Use ======
 
     namespace app\controllers\users;
     
