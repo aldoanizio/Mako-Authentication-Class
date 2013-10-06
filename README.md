@@ -3,11 +3,10 @@ Authentication Class for Mako Framework (www.http://makoframework.com)
 Based on Gatekeeper Authentication library (https://github.com/arkivverket/gatekeeper)
 
 
-Implementations
+====== Implementations ======
 
-Possibity to define login field (eg: login, email, nickname).
-Possibity to define pass field (eg: pass, password).
-Create multiples auth areas, and one of them with their own configs (eg: admin, users, members)
+    :: Possibity to define login field (eg: login, email, nickname).
+    :: Possibity to define pass field (eg: pass, password).:: Create multiples auth areas, and one of them with their own configs (eg: admin, users, members)
 
 
 Exemple How to Use
