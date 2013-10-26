@@ -7,6 +7,8 @@ Based on Gatekeeper Authentication library (https://github.com/arkivverket/gatek
 
     :: Possibity to define login field (eg: login, email, nickname).
     :: Possibity to define pass field (eg: pass, password).
+    :: Possibity to define table primary key used to store on Session and Cookie (Use "id" by default)
+    :: Store Encrypted data in session and cookie
     :: Create multiples auth areas, and one of them with their own configs (eg: admin, users, members)
 
 
@@ -25,8 +27,8 @@ Based on Gatekeeper Authentication library (https://github.com/arkivverket/gatek
         { 
             if (Auth::check('users'))
             {
-                // Do Stuffs to load user from DB based on email stored on session/cookie
-                $this->loggedUser = User::getUser(Auth::user('admin'), 'email'); 
+                // Do Stuffs to load user from DB based on primary key stored on session/cookie
+                $this->loggedUser = User::getUser(Auth::user('users')); 
             }
             else
             {
