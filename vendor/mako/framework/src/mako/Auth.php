@@ -9,6 +9,7 @@ use \mako\Request;
 use \mako\Response;
 use \mako\Session;
 use \mako\security\Password;
+use \mako\security\Crypto;
 use \mako\URL;
 
 /**
@@ -58,25 +59,32 @@ class Auth
 	 */
 
 	public static function login($section, $login, $password, $remember = false)
-	{
+	{	
+		// Attempt do Login
 		$user = self::attempt($section, $login, $password);
 
 		// If Authenticate successfull
+
 		if($user)
 		{
-			$secret = Config::get("auth.sections.{$section}.secret");
-			$authLogin = Config::get("auth.sections.{$section}.login");
-					
+			$secret = Config::get("auth.sections.{$section}.secret"); // Section Secret
+			$pk = Config::get("auth.sections.{$section}.pk", "id"); // Table Primary Key (Use "id" by default)
+
+			// Regenerate Session
 			Session::regenerate();
 
-			Session::remember($secret, $user->{$authLogin});
+			// Store Encrypted User Primary Key in Session
+			Session::remember($secret, Crypto::encrypt($user->{$pk}));
 
+			// If Remember is Set
 			if($remember == true)
-			{
-				Cookie::set($secret, $user->{$authLogin}, (Config::get("auth.sections.{$section}.ttl")));
+			{	
+				// Store Encrypted User Primary Key in Cookie
+				Cookie::set($secret, Crypto::encrypt($user->{$pk}), (Config::get("auth.sections.{$section}.ttl")));
 			}
 			else
-			{
+			{	
+				// Delete Cookie
 				Cookie::delete($secret);
 			}
 
@@ -139,16 +147,19 @@ class Auth
 	 */
 
 	public static function user($section = null)
-	{
-		$user = Session::get(Config::get("auth.sections.{$section}.secret"), null);
+	{	
+		// Get Decrypted User Primary Key From Session
+		$user = Crypto::decrypt(Session::get(Config::get("auth.sections.{$section}.secret"), null));
 		
 		if ($user)
-		{
+		{	
+			// Return Decrypted User
 			return $user;
 		}
 		else
-		{
-			return Cookie::get(Config::get("auth.sections.{$section}.secret"), null);
+		{	
+			// Return Decrypted User Primary Key from Cookie
+			return Crypto::decrypt( Cookie::get(Config::get("auth.sections.{$section}.secret"), null) );
 		}
 	}
 
